@@ -60,5 +60,7 @@ public class BoardTestController {
 		
 		return "board/detail";
 	}
+	
+	//커밋테스트
 
 }
