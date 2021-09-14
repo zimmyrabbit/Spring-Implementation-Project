@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<Configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+		
+		<properties>
+                <property name="mpbMenuApiName">MpbMenuAPI</property>
+                <Property name="maxLogFileSize">500 MB</Property>
+                <Property name="maxLogFileCount">360</Property> <!-- 1년 -->
+<!--            <property name="pattern">[%d{yyyy-MM-dd HH:mm:ss:SSS}] %-5p [%t] %c{3} - %m%n</property> -->
+                <property name="pattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%t]  %-40.40logger{39} : %m%n</property>
+        </properties>
+
+        <Appenders>
+                <Console name="Console" target="SYSTEM_OUT">
+                        <PatternLayout pattern="${pattern}" />
+                </Console>
+
+                <RollingRandomAccessFile name="MPB_MENU_API_FILE" fileName="/resources/logs/${mpbMenuApiName}.log"
+                        filePattern="/resources/logs/$${date:yyyy-MM-dd}/${mpbMenuApiName}_%d{yyyy-MM-dd}.log">
+                        <PatternLayout>
+                                <Pattern>${pattern}</Pattern>
+                        </PatternLayout>
+                        <Policies>
+                                <TimeBasedTriggeringPolicy />
+                                <SizeBasedTriggeringPolicy size="500 MB" />
+                        </Policies>
+                </RollingRandomAccessFile>
+        </Appenders>
+        <Loggers>
+                <Logger name="org.quartz" level="INFO" additivity="false">
+                        <AppenderRef ref="MPB_MENU_API_FILE" level="info" />
+                </Logger>
+                <Root level="DEBUG">
+                        <appender-ref ref="Console" level="DEBUG" />
+                        <AppenderRef ref="MPB_MENU_API_FILE" level="DEBUG" />
+                </Root>
+<!--
+                <Root level="INFO">
+                        <appender-ref ref="Console" level="INFO" />
+                        <AppenderRef ref="MPB_MENU_API_FILE" level="INFO" />
+                </Root>
+-->
+        </Loggers>
+		
+</Configuration>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.project.spring.dao.BoardTestMapper">
+    
+     <select id="selectList" resultType="Map">
+		SELECT * FROM BoardTest
+		order by no DESC;
+     </select>
+     
+     <insert id="insertBoardTest" parameterType="java.util.HashMap">
+		INSERT INTO BoardTest (title, content)
+		VALUES(#{title}, #{content})     
+		<selectKey keyProperty="no" resultType="int" order="AFTER">
+			SELECT max(no) FROM BoardTest
+		</selectKey>
+     </insert>
+     
+     <insert id="insertBoardTestFile" parameterType="java.util.HashMap">
+     	INSERT INTO BoardTestFile (boardno, originName, storedName, fileSize, contentType)
+     	VALUES (#{no}, #{originName}, #{storedName}, #{fileSize}, #{contentType})
+     </insert>
+     
+     <select id="getBoardDetail" resultType="java.util.HashMap" parameterType="int">
+     	SELECT bt.no, bt.title, bt.content, bt.date, btf.originName, btf.storedName
+		FROM BoardTest bt
+		LEFT JOIN BoardTestFile btf
+		ON bt.no = btf.boardno
+		WHERE bt.no = #{no}
+     </select>
+     
+</mapper>

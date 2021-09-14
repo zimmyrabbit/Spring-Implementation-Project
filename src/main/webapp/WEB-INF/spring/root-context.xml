@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<!-- Root Context: defines shared resources visible to all other web components -->
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+	            <value>/WEB-INF/mybatis/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true"/>
+		<property name="timeBetweenEvictionRunsMillis" value="-1"/>
+		
+		<property name="initialSize" value="${jdbc.initialSize}"/>
+		<property name="maxActive" value="${jdbc.maxActive}"/>
+		<property name="maxIdle" value="${jdbc.maxIdle}"/>
+		<property name="maxWait" value="${jdbc.maxWait}"/>
+    </bean>
+        
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">     
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="/WEB-INF/mybatis/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:sqlmap/*.xml" />
+    </bean>
+    
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory" />
+ 	</bean>
+ 	
+ 	    <!-- scan for mappers and let them be autowired -->
+    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.project.spring" />
+    </bean>	
+    
+    <context:component-scan base-package="com.project.spring" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>    
+	
+	<context:component-scan base-package="com.project.spring" />    
+	
+    <!-- Transaction definitions -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />   
+	</bean>	
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	    <tx:attributes>
+	    	<tx:method name="get*" read-only="true"/>
+	    	<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+	        <tx:method name="save*"   propagation="REQUIRED" rollback-for="Exception"/>
+	        <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+	        <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+	    </tx:attributes>
+	</tx:advice>
+	
+	<aop:config> 
+		<aop:pointcut id="txPointcut" expression="execution(public * com.project.spring..service..*Service.*(..))" /> 
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" /> 
+	</aop:config>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	
+
+
+
+    <bean id="batchTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="BatchTest" />
+    	<property name="targetMethod" value="batchTest" />
+    	<property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="batchTestTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    	<property name="jobDetail" ref="batchTest" />
+    	<property name="cronExpression" value="*/5 * * * * ?" />
+    </bean>
+
+
+	<bean id="batchTestScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- <ref bean="batchTestTrigger" /> -->
+			</list>
+		</property>
+	</bean>		
+</beans>
