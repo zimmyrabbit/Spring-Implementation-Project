@@ -80,4 +80,11 @@ public class BoardTestService {
 		return map;
 	}
 
+	public HashMap<String, Object> getFile(int fileno) {
+
+		HashMap<String, Object> map = boardTestMapper.selectFile(fileno);
+		
+		return map;
+	}
+
 }

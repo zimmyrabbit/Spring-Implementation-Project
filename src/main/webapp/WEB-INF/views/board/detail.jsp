@@ -16,6 +16,7 @@
 <div>${map.content }</div>
 
 <img src="/resources/${map.storedName}" style="width:300px; height:300px;" />
+<a href="/board/download?fileno=${map.fileno }">${map.originName }</a>
 
 </body>
 </html>

@@ -61,6 +61,15 @@ public class BoardTestController {
 		return "board/detail";
 	}
 	
-	//커밋테스트
+	//파일 다운로드
+	@RequestMapping(value="/board/download", method=RequestMethod.GET)
+	public String download(int fileno, Model model) {
+		
+		HashMap<String, Object> map = boardTestService.getFile(fileno);
+		
+		model.addAttribute("map", map);
+		
+		return "down";
+	}
 
 }

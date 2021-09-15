@@ -28,7 +28,7 @@
 	</beans:bean>
 	
 	<!-- DownloadView -->
-<!-- 	<beans:bean id="down" class="web.view.DownloadView" /> -->
+	<beans:bean id="down" class="com.project.spring.util.DownloadView" />
 
 	<!-- MultipertResolver -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

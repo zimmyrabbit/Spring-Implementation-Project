@@ -14,6 +14,8 @@ public interface BoardTestMapper {
 
 	public HashMap<String, Object> getBoardDetail(int no);
 
+	public HashMap<String, Object> selectFile(int fileno);
+
 	
 
 }

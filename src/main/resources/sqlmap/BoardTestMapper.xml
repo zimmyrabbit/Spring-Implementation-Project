@@ -24,11 +24,16 @@
      </insert>
      
      <select id="getBoardDetail" resultType="java.util.HashMap" parameterType="int">
-     	SELECT bt.no, bt.title, bt.content, bt.date, btf.originName, btf.storedName
+     	SELECT bt.no, bt.title, bt.content, bt.date, btf.originName, btf.storedName, btf.fileno
 		FROM BoardTest bt
 		LEFT JOIN BoardTestFile btf
 		ON bt.no = btf.boardno
 		WHERE bt.no = #{no}
+     </select>
+     
+     <select id="selectFile" resultType="java.util.HashMap" parameterType="int">
+     	SELECT * FROM BoardTestFile
+     	WHERE fileno = #{fileno}
      </select>
      
 </mapper>
