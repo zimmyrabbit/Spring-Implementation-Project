@@ -1,17 +1,14 @@
 package com.project.spring.service;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.spring.dao.BoardTestMapper;
 
@@ -28,49 +25,27 @@ public class BoardTestService {
 		return list;
 	}
 
-	public void writeBoard(HashMap<String, String> map, MultipartFile file) {
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED, rollbackFor=Exception.class)
+	public int writeBoard(HashMap<String, String> map, List<Map> file ) {
 		
-		boardTestMapper.insertBoardTest(map);
 		
-		System.out.println(String.valueOf(map.get("no")));
+		int cnt = 0;
+		cnt = boardTestMapper.insertBoardTest(map);
+		HashMap<String, String> fileMap = new HashMap<String, String>();
 		
-		if(!file.isEmpty()) {
-			String storedPath = context.getRealPath("resources");
+		if(file != null && file.size() > 0) {
+			fileMap.put("boardno",String.valueOf(map.get("no")));
 			
-			System.out.println(storedPath);
-			
-			File stored = new File(storedPath);
-			if(!stored.exists()) {
-				stored.mkdir();
+			for(Map<String, String> data : file) {	
+				fileMap.put("originName", data.get("originName"));
+				fileMap.put("saveFilePath", data.get("saveFilePath"));
+				fileMap.put("storedName", data.get("storedName"));
+				fileMap.put("fileSize", data.get("fileSize"));
+				fileMap.put("contentType", data.get("contentType"));
 			}
-			
-			String originName = file.getOriginalFilename();
-			String storedName = originName + UUID.randomUUID().toString().split("-")[4];
-			
-			int fileSize = (int)file.getSize();
-			
-			int dot = file.getOriginalFilename().lastIndexOf(".");
-			String contentType = file.getOriginalFilename().substring(dot + 1);
-			
-			File dest = new File(stored, storedName);
-			
-			try {
-				file.transferTo(dest);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			HashMap<String, Object> fileMap = new HashMap<>();
-			fileMap.put("no", String.valueOf(map.get("no")));
-			fileMap.put("originName", originName);
-			fileMap.put("storedName", storedName);
-			fileMap.put("fileSize", fileSize);
-			fileMap.put("contentType", contentType);
-			
-			boardTestMapper.insertBoardTestFile(fileMap);
+			cnt = boardTestMapper.insertBoardTestFile(fileMap);
 		}
+		return cnt;
 	}
 
 	public HashMap<String, Object> detailBoard(int no) {
