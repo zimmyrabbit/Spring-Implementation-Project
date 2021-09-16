@@ -8,9 +8,9 @@ public interface BoardTestMapper {
 
 	public ArrayList<Map<String, String>> selectList();
 
-	public void insertBoardTest(HashMap<String, String> map);
+	public int insertBoardTest(HashMap<String, String> map);
 
-	public void insertBoardTestFile(HashMap<String, Object> fileMap);
+	public int insertBoardTestFile(HashMap<String, String> fileMap);
 
 	public HashMap<String, Object> getBoardDetail(int no);
 

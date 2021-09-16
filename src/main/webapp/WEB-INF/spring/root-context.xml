@@ -81,8 +81,7 @@
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	
 
-
-
+	<!--
     <bean id="batchTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     	<property name="targetObject" ref="BatchTest" />
     	<property name="targetMethod" value="batchTest" />
@@ -98,8 +97,9 @@
 	<bean id="batchTestScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<!-- <ref bean="batchTestTrigger" /> -->
+			 <ref bean="batchTestTrigger" />
 			</list>
 		</property>
 	</bean>		
+	 -->
 </beans>
