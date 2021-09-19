@@ -7,7 +7,7 @@
     
      <select id="selectList" resultType="Map">
 		SELECT * FROM BoardTest
-		order by no DESC;
+		order by no DESC
      </select>
      
      <insert id="insertBoardTest" parameterType="java.util.HashMap">
@@ -19,12 +19,18 @@
      </insert>
      
      <insert id="insertBoardTestFile" parameterType="java.util.HashMap">
-     	INSERT INTO BoardTestFile (boardno, originName, storedName, fileSize, contentType)
-     	VALUES (#{no}, #{originName}, #{storedName}, #{fileSize}, #{contentType})
+     	INSERT INTO BoardTestFile (boardno, originName, saveFilePath, storedName, fileSize, contentType)
+     	VALUES (#{boardno}, #{originName}, #{saveFilePath}, #{storedName}, #{fileSize}, #{contentType})
      </insert>
      
      <select id="getBoardDetail" resultType="java.util.HashMap" parameterType="int">
-     	SELECT bt.no, bt.title, bt.content, bt.date, btf.originName, btf.storedName, btf.fileno
+     	SELECT bt.no, 
+     		   bt.title, 
+     		   bt.content, 
+     		   bt.date, 
+     		   btf.originName, 
+     		   btf.storedName,
+     		   btf.saveFilePath
 		FROM BoardTest bt
 		LEFT JOIN BoardTestFile btf
 		ON bt.no = btf.boardno

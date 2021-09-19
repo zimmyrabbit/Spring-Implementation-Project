@@ -79,29 +79,6 @@
 	</aop:config>
 	
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-<<<<<<< HEAD
-
-<!--     <bean id="batchTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
-<!--     	<property name="targetObject" ref="BatchTest" /> -->
-<!--     	<property name="targetMethod" value="batchTest" /> -->
-<!--     	<property name="concurrent" value="false" /> -->
-<!--     </bean> -->
-
-<!--     <bean id="batchTestTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> -->
-<!--     	<property name="jobDetail" ref="batchTest" /> -->
-<!--     	<property name="cronExpression" value="*/5 * * * * ?" /> -->
-<!--     </bean> -->
-
-
-<!-- 	<bean id="batchTestScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> -->
-<!-- 		<property name="triggers"> -->
-<!-- 			<list> -->
-<!-- 				<ref bean="batchTestTrigger" /> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean>		 -->
-=======
-	
 
 	<!--
     <bean id="batchTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -124,5 +101,4 @@
 		</property>
 	</bean>		
 	 -->
->>>>>>> c3da0955382f8473c09706e63572742220d16bf2
 </beans>

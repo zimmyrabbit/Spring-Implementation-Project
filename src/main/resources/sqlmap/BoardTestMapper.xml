@@ -24,9 +24,6 @@
      </insert>
      
      <select id="getBoardDetail" resultType="java.util.HashMap" parameterType="int">
-<<<<<<< HEAD
-     	SELECT bt.no, bt.title, bt.content, bt.date, btf.originName, btf.storedName, btf.fileno
-=======
      	SELECT bt.no, 
      		   bt.title, 
      		   bt.content, 
@@ -34,7 +31,6 @@
      		   btf.originName, 
      		   btf.storedName,
      		   btf.saveFilePath
->>>>>>> c3da0955382f8473c09706e63572742220d16bf2
 		FROM BoardTest bt
 		LEFT JOIN BoardTestFile btf
 		ON bt.no = btf.boardno

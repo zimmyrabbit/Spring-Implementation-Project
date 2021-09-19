@@ -28,12 +28,7 @@
 	</c:if>
 </body>
 
-<<<<<<< HEAD
-<img src="/resources/${map.storedName}" style="width:300px; height:300px;" />
-<a href="/board/download?fileno=${map.fileno }">${map.originName }</a>
-=======
 <script>
->>>>>>> c3da0955382f8473c09706e63572742220d16bf2
 
 // 파일 다운로드
 $('#file_down').unbind("click").click(function(e) {	

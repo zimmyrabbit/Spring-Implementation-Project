@@ -93,21 +93,6 @@ public class BoardTestController {
 		return "board/detail";
 	}
 	
-<<<<<<< HEAD
-	//파일 다운로드
-	@RequestMapping(value="/board/download", method=RequestMethod.GET)
-	public String download(int fileno, Model model) {
-		
-		HashMap<String, Object> map = boardTestService.getFile(fileno);
-		
-		model.addAttribute("map", map);
-		
-		return "down";
-	}
-=======
-	//커밋테스트
-	
-	
 	//파일 다운로드
 	@RequestMapping(value="/board/fileDown", method=RequestMethod.GET)
 	public void boardFileDown(HttpServletRequest request,
@@ -188,6 +173,9 @@ public class BoardTestController {
         }else {return "Firefox"; }
     }
 	
->>>>>>> c3da0955382f8473c09706e63572742220d16bf2
-
+	@RequestMapping(value="/board/map", method=RequestMethod.GET) 
+	public void map() {
+		
+	}
+	
 }
