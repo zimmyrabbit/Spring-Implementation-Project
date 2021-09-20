@@ -42,4 +42,13 @@
      	WHERE fileno = #{fileno}
      </select>
      
+     <insert id="insertMapInfo" parameterType="java.util.HashMap">
+     	INSERT INTO BoardMap (mainAddress, middleAddress, lat, len)
+     	VALUES (#{mainAddress}, #{middleAddress}, #{latitude}, #{longitude})
+     </insert>
+     
+     <select id="selectMapList" resultType="java.util.Map">
+		SELECT * FROM BoardMap     
+     </select>
+     
 </mapper>

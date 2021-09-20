@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -60,6 +62,22 @@ public class BoardTestService {
 		HashMap<String, Object> map = boardTestMapper.selectFile(fileno);
 		
 		return map;
+	}
+
+	public void setMapInfo(HashMap<String, String> map) {
+		
+		boardTestMapper.insertMapInfo(map);
+	}
+
+	public List<Map<String, Object>> getMapList() {
+		
+		List<Map<String, Object>> list = boardTestMapper.selectMapList();
+		
+		for(int i=0; i<list.size(); i++) {
+			list.get(i).get("mapSeq");
+		}
+		
+		return list;
 	}
 
 }

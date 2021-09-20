@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.project.spring.service.BoardTestService;
 import com.project.spring.util.Constants;
 import com.project.spring.util.FileUtil;
@@ -174,8 +179,45 @@ public class BoardTestController {
     }
 	
 	@RequestMapping(value="/board/map", method=RequestMethod.GET) 
-	public void map() {
+	public void map() { }
+	
+	@RequestMapping(value="/board/map", method=RequestMethod.POST)
+	public @ResponseBody void mapProc(HttpServletRequest request) {
 		
+		HashMap<String, String> map = new HashMap<>();
+
+		String address = request.getParameter("address");
+		StringTokenizer tokens = new StringTokenizer(address, " ");
+		String[] newStr = new String[tokens.countTokens()];
+
+		String mainAddress = "";
+		String middleAddress = "";
+		
+		int index = 0;
+		while(tokens.hasMoreTokens()) {
+			newStr[index] = tokens.nextToken();
+			if(index < 2) {
+				mainAddress += newStr[index] + " ";
+			} else {
+				middleAddress += newStr[index] + " ";
+			}
+			index++;
+		}
+		
+		map.put("mainAddress", mainAddress);
+		map.put("middleAddress", middleAddress);
+		map.put("latitude", request.getParameter("latitude"));
+		map.put("longitude", request.getParameter("longitude"));
+		
+		boardTestService.setMapInfo(map);
+	}
+	
+	@RequestMapping(value="/board/mapList", method=RequestMethod.GET)
+	public @ResponseBody List<Map<String, Object>> mapList() {
+		
+		List<Map<String, Object>> list = boardTestService.getMapList();
+
+		return list;
 	}
 	
 }

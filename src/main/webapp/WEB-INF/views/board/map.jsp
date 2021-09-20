@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>See-U</title>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=9qbj4wcua8&submodules=geocoder"></script>
 	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<link rel="shortcut icon" href="/resources/img/favicon.ico" type="image/x-icon">
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
 </head>
 <body>
 <div class="search">
@@ -18,7 +19,13 @@
 </div>
 <div id="map" style="width:1000px;height:500px;"></div>
 
+<div id="mapList"></div>
+
 <script>
+
+//mapList 호출
+selectMapList();
+
 var mapOptions = {
     center: new naver.maps.LatLng(37.3595704, 127.105399),
     zoom: 15,
@@ -31,8 +38,7 @@ var infoWindow = new naver.maps.InfoWindow({
     anchorSkew: true
 });
 
-map.setCursor('pointer');
-
+//위치검색한 좌표 지도에 찍어주기
 function searchAddressToCoordinate(address) {
     naver.maps.Service.geocode({
         query: address
@@ -70,17 +76,17 @@ function searchAddressToCoordinate(address) {
 
         map.setCenter(point);
         infoWindow.open(map, point);
+        
+        insertAddress(item.roadAddress, item.x, item.y);
+        
     });
 }
 
+//위치 검색
 function initGeocoder() {
     if (!map.isStyleMapReady) {
         return;
     }
-
-    map.addListener('click', function(e) {
-        searchCoordinateToAddress(e.coord);
-    });
 
     $('#address').on('keydown', function(e) {
         var keyCode = e.which;
@@ -96,11 +102,68 @@ function initGeocoder() {
         searchAddressToCoordinate($('#address').val());
     });
 
-    searchAddressToCoordinate('정자동 178-1');
 }
 
-naver.maps.onJSContentLoaded = initGeocoder;
 naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
+
+//검색정보 BoardMap 테이블에 저장
+function insertAddress(address, latitude, longitude) {
+	
+	$.ajax({
+		type : 'post'
+		, url : '/board/map'
+		, data : {'address' : address
+				, 'latitude' : latitude
+				, 'longitude' : longitude}
+		, success : function() {
+			
+			$("#mapList").html("");
+			selectMapList();
+		}
+	})
+}
+
+//BoardMap 테이블 위치저장 정보 가져오기
+function selectMapList() {
+	
+	$.ajax({
+		type : 'get'
+		, url : '/board/mapList'
+		, dataType : 'json'
+		, success : function(data) {
+			
+			var mapList = "";
+			
+			mapList += "<table>"
+			mapList += "<tr>"
+			mapList += "	<th>seq</th>"
+			mapList += "	<th>대분류</th>"
+			mapList += "	<th>소분류</th>"
+			mapList += "	<th>위도</th>"
+			mapList += "	<th>경도</th>"
+			mapList += "</tr>"
+			
+			for(var i=0; i<data.length; i++) {
+				mapList += "<tr onclick='test(\"" + data[i].middleAddress + "\")'>"
+				mapList += "	<td>" + data[i].mapSeq + "</td>"
+				mapList += "	<td>" + data[i].mainAddress + "</td>"
+				mapList += "	<td>" + data[i].middleAddress + "</td>"
+				mapList += "	<td>" + data[i].lat + "</td>"
+				mapList += "	<td>" + data[i].len + "</td>"
+				mapList += "</tr>"
+			}
+			
+			mapList += "</table>"
+			
+			$("#mapList").append(mapList);
+		}
+		
+	})
+}
+
+function test(test) {
+	alert(test);
+}
 </script>
 </body>
 </html>
