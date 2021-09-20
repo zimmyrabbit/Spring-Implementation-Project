@@ -30,6 +30,7 @@
 </table>
 
 <a href="/board/write"><button type="button">글쓰기</button></a>
+<a href="/board/videoWrite"><button type="button">동영상 글쓰기</button></a>
 
 </body>
 </html>

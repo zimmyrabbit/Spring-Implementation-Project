@@ -32,8 +32,8 @@
 
 	<!-- MultipertResolver -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxInMemorySize" value="1048576"></beans:property>
-		<beans:property name="maxUploadSize" value="1048576"></beans:property>
+		<beans:property name="maxInMemorySize" value="104857600"></beans:property>
+		<beans:property name="maxUploadSize" value="104857600"></beans:property>
 	</beans:bean>
 	
 	<context:component-scan base-package="com.project.spring" />

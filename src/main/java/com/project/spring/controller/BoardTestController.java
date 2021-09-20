@@ -87,6 +87,53 @@ public class BoardTestController {
 		return "redirect: /board/list";
 	}
 	
+	
+	/**
+	 * 
+	 * 비디오 업로드
+	 */
+	@RequestMapping(value="/board/videoWrite", method=RequestMethod.GET)
+	public void videoWrite() {}
+	
+	@RequestMapping(value="/board/videoWrite", method=RequestMethod.POST)
+	public String videoWrite(HttpServletRequest request) throws Exception {
+		HashMap<String, String> map = new HashMap<String, String>();
+		String file_size = request.getParameter("file_size");
+		String content = request.getParameter("content");
+		String title = request.getParameter("title");
+		
+		if(Constants.MAX_VIDEO_FILESIZE < Integer.parseInt(file_size)) {
+			throw new Exception("file_size ===> MAX_ERROR");
+		}
+		if(content == null || "".equals(content)) {
+			throw new Exception("content ===> content not exits");
+		}else {
+			map.put("content", content);
+		}
+		if(title == null || "".equals(title)) {
+			throw new Exception("title ===> title not exits");
+		}else {
+			map.put("title", title);
+		}
+		
+		List<Map> transFile = null;
+		transFile = FileUtil.ffmpegUploadFile(request, Constants.BOARD_DOWN_LOAD_PATH, Constants.BOARD_SUB_FOLDER);
+		
+		if(transFile != null && transFile.size() > 1) {
+			throw new Exception("===================== overFileCnt =====================");
+		}
+		
+		int cnt = boardTestService.writeBoard(map,transFile);
+		
+		if( cnt < 1) {
+			throw new Exception(" /board/write > post ============ ERROR ============");
+		}
+		
+		return "redirect: /board/list";
+	}
+	
+	
+	
 	//상세보기
 	@RequestMapping(value="/board/detail", method=RequestMethod.GET)
 	public String boardTestDetail(Model model, int no) {

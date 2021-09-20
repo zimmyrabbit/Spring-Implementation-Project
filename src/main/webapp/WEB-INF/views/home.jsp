@@ -9,6 +9,8 @@
 	Hello world!  
 </h1>
 
+<a href="<c:url value='/board/list'/>">Board List</a>
+
 <P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>
