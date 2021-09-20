@@ -46,11 +46,7 @@ public class HomeController {
 		
 		list = testService.getList();
 		
-		System.out.println(list.get(0).get("test1"));
-		System.out.println(list.get(0).get("test2"));
-		System.out.println("===========================================");
-		System.out.println(list.get(1).get("test1"));
-		System.out.println(list.get(1).get("test2"));
+		System.out.println(list.get(0).get("test1") + "START");
 		
 		return "home";
 	}

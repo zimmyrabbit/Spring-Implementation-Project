@@ -16,9 +16,9 @@ public class Constants
 	public static final String BOARD_SUB_FOLDER			= "Board";	
 	
 	//ffmpeg
-	public static final String FFMPEG_PATH       = "src/main/resources/ffmpeg/bin/ffmpeg";
+	public static final String FFMPEG_PATH       = "C:\\git\\Spring\\src\\main\\resources\\ffmpeg\\bin\\ffmpeg";
 	
 	//ffprobe
-	public static final String FFPROBE_PATH       =  "src/main/resources/ffmpeg/bin/ffprobe";
+	public static final String FFPROBE_PATH       =  "C:\\git\\Spring\\src\\main\\resources\\ffmpeg\\bin\\ffprobe";
 	
 }

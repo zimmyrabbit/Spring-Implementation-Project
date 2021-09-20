@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.View;
 
 import com.project.spring.service.BoardTestService;
 import com.project.spring.util.Constants;
+import com.project.spring.util.ExcelView;
 import com.project.spring.util.FileUtil;
 
 @Controller
@@ -132,14 +135,25 @@ public class BoardTestController {
 		return "redirect: /board/list";
 	}
 	
-	
-	
 	//상세보기
 	@RequestMapping(value="/board/detail", method=RequestMethod.GET)
-	public String boardTestDetail(Model model, int no) {
+	public String boardTestDetail(Model model, int no) throws Exception {
 		
 		HashMap<String, Object> map = boardTestService.detailBoard(no);
+			
+		String[] ext = {".png",".jpg",".jpeg",".gif",".pdf"};
+		String caseExt = map.get("contentType").toString().toLowerCase();
+		boolean contentType = Arrays.asList(ext).contains(caseExt);  // 사진이면 true, 그 외 false
 		
+		if(caseExt.equals("n")) {  
+			map.put("contentType", "no");  // 파일없음.
+		}else if(contentType) {
+			map.put("contentType", "img");  // 사진파일
+		}else if(!contentType) {
+			map.put("contentType", "video");  // 동영상 파일
+		}else {  // 그 외는 에러로 간주
+			throw new Exception(" /board/detail > file detail ============ ERROR ============");
+		}
 		model.addAttribute("map", map);
 		
 		return "board/detail";
@@ -266,5 +280,15 @@ public class BoardTestController {
 
 		return list;
 	}
+	
+	@RequestMapping(value="/board/excelDown", method=RequestMethod.POST)
+	public View getExcelDown(Model model) {
+		
+		List<Map<String, String>> list = boardTestService.getBoradTestList();
+		model.addAttribute("list", list);
+
+		return new ExcelView();
+	}
+	
 	
 }

@@ -19,12 +19,20 @@
 
 <div>${map.content }</div>
 	
-	<c:if test="${not empty map.storedName}">
-		<img src="/file/board/${map.storedName}" style="width:300px; height:300px;" />
-		<br>
-		<br>
+	<c:if test="${'no' ne map.contentType}">
+		<c:if test="${'img' eq map.contentType}">
+			<img src="/file/board/${map.storedName}" style="width:300px; height:300px;" />
+		</c:if>
 		
+		<c:if test="${'video' eq map.contentType}">
+			<video src="/file/board/${map.storedName}" style="width:550px; height:480px;" autoplay="autoplay"></video>
+		</c:if>
+		<br>
+		<br>
 		<button type="button" id="file_down">파일 다운로드</button>
+	</c:if>
+	<c:if test="${'no' eq map.contentType }">
+		[파일없음]
 	</c:if>
 </body>
 
