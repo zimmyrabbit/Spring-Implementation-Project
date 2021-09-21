@@ -6,7 +6,7 @@
 <mapper namespace="com.project.spring.dao.BoardTestMapper">
     
      <select id="selectList" resultType="Map">
-		SELECT * FROM BoardTest
+		SELECT *, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as excelDate FROM BoardTest
 		order by no DESC
      </select>
      
@@ -30,7 +30,8 @@
      		   bt.date, 
      		   btf.originName, 
      		   btf.storedName,
-     		   btf.saveFilePath
+     		   btf.saveFilePath,
+     		   coalesce(btf.contentType, 'N') as contentType
 		FROM BoardTest bt
 		LEFT JOIN BoardTestFile btf
 		ON bt.no = btf.boardno

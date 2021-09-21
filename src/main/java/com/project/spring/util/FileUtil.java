@@ -8,11 +8,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
+
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
@@ -74,11 +78,26 @@ public class FileUtil
 				FFmpegProbeResult info = ffprobe.probe(filePath); // 업로드한 파일의 정보 추출
 				int bit_rate = (int)info.getFormat().bit_rate > 1048000 ? 1048000 : (int)info.getFormat().bit_rate; // 업로드한 동영상의 비트레이트 추출
 				
+				int width = 0;
+				int height = 0;
+				
+				for(int i=0; i<info.getStreams().size(); i++) {
+					if(info.getStreams().get(i).width > 0) {
+						if(info.getStreams().get(i).width > 1280) {
+							width = 800;
+							height = 600;
+						} else {
+							width = info.getStreams().get(i).width;
+							height = info.getStreams().get(i).height;
+						}
+					}						
+				}
+				
 				logger.debug("====== Video Conversion Start ======");
 				/* 파일변환 실행 */
 				FFmpegBuilder builder = new FFmpegBuilder().setInput(filePath)
 					.addOutput(realPath)  // 저장할 경로
-					.setVideoResolution(800, 600)  // 해상도 x, y
+					.setVideoResolution(width, height)  // 해상도 x, y
 					.setVideoBitRate(bit_rate)  // 비트레이트 ( 용량과 제일 밀접함 --> 높을수록 화질좋고 용량커짐)
 					.setVideoCodec("libx264")  // 코덱
 					.setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
