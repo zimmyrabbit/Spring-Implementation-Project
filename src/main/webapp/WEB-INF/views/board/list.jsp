@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,15 +15,16 @@
 </head>
 <body>
 
-<h1>BoardTest</h1>
+<h1><p><spring:message code="board.title"/></p></h1>
+<!-- 게시판리스트 -->
 
 <hr>
 
 <table>
 	<tr>
-		<th>글번호</th>
-		<th>제목</th>
-		<th>작성일</th>
+		<th><spring:message code="board.col1"/></th> <!-- 글번호 -->
+		<th><spring:message code="board.col2"/></th> <!-- 제목 -->
+		<th><spring:message code="board.col3"/></th> <!-- 작성일자 -->
 	</tr>
 	<c:forEach items="${list }" var="item">
 		<tr>
@@ -34,9 +36,9 @@
 </table>
 <form id="excelDownForm"></form>
 
-<a href="/board/write"><button type="button">글쓰기</button></a>
-<a href="/board/videoWrite"><button type="button">동영상 글쓰기</button></a>
-<button type="button" id="excelDown">리스트 엑셀다운</button>
+<a href="/board/write"><button type="button"><spring:message code="btn.write"/></button></a> <!-- 글쓰기 -->
+<a href="/board/videoWrite"><button type="button"><spring:message code="btn.videoWrite"/></button></a> <!-- 동영상 올리기 -->
+<button type="button" id="excelDown"><spring:message code="btn.excel"/></button> <!-- 엑셀 다운로드 -->
 
 </body>
 <script type="text/javascript">
