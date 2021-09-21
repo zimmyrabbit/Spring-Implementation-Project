@@ -10,6 +10,8 @@
 </h1>
 
 <a href="<c:url value='/board/list'/>">Board List</a>
+<br>
+<a href="<c:url value='/board/map'/>">Naver MAP</a>
 
 <P>  The time on the server is ${serverTime}. </P>
 </body>

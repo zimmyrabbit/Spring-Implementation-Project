@@ -144,7 +144,7 @@ function selectMapList() {
 			mapList += "</tr>"
 			
 			for(var i=0; i<data.length; i++) {
-				mapList += "<tr onclick='test(\"" + data[i].middleAddress + "\")'>"
+				mapList += "<tr onclick='moveMap(\"" + data[i].len + "\" , \"" + data[i].lat +"\")'>"
 				mapList += "	<td>" + data[i].mapSeq + "</td>"
 				mapList += "	<td>" + data[i].mainAddress + "</td>"
 				mapList += "	<td>" + data[i].middleAddress + "</td>"
@@ -161,8 +161,20 @@ function selectMapList() {
 	})
 }
 
-function test(test) {
-	alert(test);
+function moveMap(len, lat) {
+	var mapOptions = {
+		    center: new naver.maps.LatLng(len, lat),
+		    zoom: 15,
+		    mapTypeControl: true
+		};
+
+		var map = new naver.maps.Map('map', mapOptions);
+
+		var marker = new naver.maps.Marker({
+		    position: new naver.maps.LatLng(len, lat),
+		    map: map
+		});
+
 }
 </script>
 </body>
