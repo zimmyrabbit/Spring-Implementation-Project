@@ -26,17 +26,19 @@
 //mapList 호출
 selectMapList();
 
-var mapOptions = {
-    center: new naver.maps.LatLng(37.3595704, 127.105399),
-    zoom: 15,
-    mapTypeControl: true
-};
+// var map = new naver.maps.Map('map', {
+//     center: new naver.maps.LatLng(37.3595704, 127.105399),
+//     zoom: 10
+// });
 
-var map = new naver.maps.Map('map', mapOptions);
+// var marker = new naver.maps.Marker({
+//     position: new naver.maps.LatLng(126.6745, 37.5641),
+//     map: map
+// });
 
-var infoWindow = new naver.maps.InfoWindow({
-    anchorSkew: true
-});
+// var infoWindow = new naver.maps.InfoWindow({
+//     anchorSkew: true
+// });
 
 //위치검색한 좌표 지도에 찍어주기
 function searchAddressToCoordinate(address) {
@@ -156,8 +158,42 @@ function selectMapList() {
 			mapList += "</table>"
 			
 			$("#mapList").append(mapList);
+			
+			//----------------------------------------------------------
+			
+			var map = new naver.maps.Map('map', {
+			    center: new naver.maps.LatLng(37.3595704, 127.105399),
+			    zoom: 10
+			});
+			
+			var markers = [];
+			
+			for(var i=0; i<data.length; i++) {
+				var marker = new naver.maps.Marker({
+				    position: new naver.maps.LatLng(data[i].len, data[i].lat),
+				    map: map,
+				    zIndex: 100
+				});
+				markers.push(marker);
+			}
+
+		    var mapBounds = map.getBounds();
+		    var marker, position;
+
+		    for (var j = 0; j < markers.length; j++) {
+
+		        marker = markers[j]
+		        position = marker.getPosition();
+
+		        if (mapBounds.hasLatLng(position)) {
+		            marker.setMap(map);
+		        } else {
+		            marker.setMap(null);
+		        }
+		    }
+
+			
 		}
-		
 	})
 }
 
@@ -176,6 +212,7 @@ function moveMap(len, lat) {
 		});
 
 }
+
 </script>
 </body>
 </html>
