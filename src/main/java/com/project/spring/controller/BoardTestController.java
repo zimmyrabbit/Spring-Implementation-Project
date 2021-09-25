@@ -12,15 +12,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +34,7 @@ import com.project.spring.service.BoardTestService;
 import com.project.spring.util.Constants;
 import com.project.spring.util.ExcelView;
 import com.project.spring.util.FileUtil;
+import com.project.spring.util.MailSender;
 
 @Controller
 public class BoardTestController {
@@ -38,6 +43,9 @@ public class BoardTestController {
 	
 	@Autowired
 	BoardTestService boardTestService;
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	//리스트
 	@RequestMapping(value="/board/list", method=RequestMethod.GET)
@@ -240,6 +248,16 @@ public class BoardTestController {
         }else {return "Firefox"; }
     }
 	
+	@RequestMapping(value="/board/excelDown", method=RequestMethod.POST)
+	public View getExcelDown(Model model) {
+		
+		List<Map<String, Object>> list = boardTestService.getBoradTestList();
+		model.addAttribute("list", list);
+
+		return new ExcelView();
+	}
+	
+	//Naver V3 Map
 	@RequestMapping(value="/board/map", method=RequestMethod.GET) 
 	public void map() { }
 	
@@ -282,15 +300,7 @@ public class BoardTestController {
 		return list;
 	}
 	
-	@RequestMapping(value="/board/excelDown", method=RequestMethod.POST)
-	public View getExcelDown(Model model) {
-		
-		List<Map<String, Object>> list = boardTestService.getBoradTestList();
-		model.addAttribute("list", list);
-
-		return new ExcelView();
-	}
-	
+	//dataTable
 	@RequestMapping(value="/board/datatableList", method=RequestMethod.GET)
 	public void datatableList() { }
 	
@@ -302,5 +312,30 @@ public class BoardTestController {
 		return data;
 	}
 	
+	//mail
+	@RequestMapping(value="/board/mail", method=RequestMethod.GET)
+	public void mail() {}
+	
+	@RequestMapping(value="/board/mailSend", method=RequestMethod.POST)
+	public void mailSender(HttpServletRequest request) {
+		
+		String id = "zimmyrabbit@naver.com";
+		String toMail = "zimmyrabbit@naver.com";
+		String title = "test";
+		String content = "test";
+		
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			helper.setFrom(new InternetAddress(id, "dd"));
+			helper.setTo(toMail);
+			helper.setSubject(title);
+			helper.setText(content,true);
+			mailSender.send(message);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

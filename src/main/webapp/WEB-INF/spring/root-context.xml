@@ -47,7 +47,7 @@
         <constructor-arg ref="sqlSessionFactory" />
  	</bean>
  	
- 	    <!-- scan for mappers and let them be autowired -->
+ 	<!-- scan for mappers and let them be autowired -->
     <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.project.spring" />
     </bean>	
@@ -79,7 +79,8 @@
 	</aop:config>
 	
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-
+	
+	<!-- Batch -->
 	<!--
     <bean id="batchTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     	<property name="targetObject" ref="BatchTest" />
@@ -101,4 +102,27 @@
 		</property>
 	</bean>		
 	 -->
+	 
+	 <!-- mail -->
+	 
+	 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	 	<property name="host" value="smtp.naver.com" />
+	 	<property name="port" value="587" />
+	 	<property name="username" value="" />
+	 	<property name="password" value="" />
+	 	
+	 	<property name="javaMailProperties">
+		 	<props>
+		 		<prop key="mail.smtp.auth">true</prop>
+		 		<prop key="mail.smtp.starttls.enable">true</prop>
+		 		<prop key="mail.smtps.checkserveridentity">true</prop>
+		 		<prop key="mail.smtps.ssl.trust">*</prop>
+		 		<prop key="mail.debug">true</prop>
+		 		<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+		 		<prop key="mail.transport.protocol">smtp</prop>
+		 		<prop key="mail.smtp.ssl.trust">smtp.naver.com</prop>
+		 		<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+		 	</props>
+	 	</property>
+	 </bean>
 </beans>

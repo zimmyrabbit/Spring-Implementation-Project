@@ -23,6 +23,8 @@
 <br>
 <a href="<c:url value='/board/datatableList'/>">datatable Board List</a>
 <br>
+<a href="<c:url value='/board/mail'/>">mailsend</a>
+<br>
 
 <p><spring:message code="title.main"/></p>
 <p><spring:message code="title.content"/></p>
