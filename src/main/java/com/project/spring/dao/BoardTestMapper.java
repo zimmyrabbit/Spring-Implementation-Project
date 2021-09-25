@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface BoardTestMapper {
 
-	public ArrayList<Map<String, String>> selectList();
+	public ArrayList<Map<String, Object>> selectList();
 
 	public int insertBoardTest(HashMap<String, String> map);
 

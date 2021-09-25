@@ -20,9 +20,9 @@ public class BoardTestService {
 	@Autowired BoardTestMapper boardTestMapper;
 	@Autowired ServletContext context;
 	
-	public ArrayList<Map<String, String>> getBoradTestList() {
+	public ArrayList<Map<String, Object>> getBoradTestList() {
 
-		ArrayList<Map<String,String>> list = boardTestMapper.selectList();
+		ArrayList<Map<String,Object>> list = boardTestMapper.selectList();
 		
 		return list;
 	}

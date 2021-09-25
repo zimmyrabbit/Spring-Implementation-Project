@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,7 +43,7 @@ public class BoardTestController {
 	@RequestMapping(value="/board/list", method=RequestMethod.GET)
 	public String boardTestList(Model model) {
 		
-		ArrayList<Map<String, String>> list = boardTestService.getBoradTestList();
+		ArrayList<Map<String, Object>> list = boardTestService.getBoradTestList();
 		
 		model.addAttribute("list", list);
 		
@@ -284,10 +285,21 @@ public class BoardTestController {
 	@RequestMapping(value="/board/excelDown", method=RequestMethod.POST)
 	public View getExcelDown(Model model) {
 		
-		List<Map<String, String>> list = boardTestService.getBoradTestList();
+		List<Map<String, Object>> list = boardTestService.getBoradTestList();
 		model.addAttribute("list", list);
 
 		return new ExcelView();
+	}
+	
+	@RequestMapping(value="/board/datatableList", method=RequestMethod.GET)
+	public void datatableList() { }
+	
+	@RequestMapping(value="/board/datatableListView", method=RequestMethod.POST)
+	public @ResponseBody ArrayList<Map<String, Object>> datatableListProc() {
+		
+		ArrayList<Map<String, Object>> data = boardTestService.getBoradTestList();
+		
+		return data;
 	}
 	
 	
