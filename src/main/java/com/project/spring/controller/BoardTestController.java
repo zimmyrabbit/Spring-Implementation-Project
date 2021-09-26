@@ -48,7 +48,6 @@ public class BoardTestController {
 	@Autowired
 	private JavaMailSender mailSender;
 	
-	
 	//리스트
 	@RequestMapping(value="/board/list", method=RequestMethod.GET)
 	public String boardTestList(Model model, HttpServletRequest request) {
@@ -370,17 +369,17 @@ public class BoardTestController {
 	public void mail() {}
 	
 	@RequestMapping(value="/board/mailSend", method=RequestMethod.POST)
-	public void mailSender(HttpServletRequest request) {
+	public @ResponseBody void mailSender(HttpServletRequest request) {
 		
 		String id = "zimmyrabbit@naver.com";
-		String toMail = "zimmyrabbit@naver.com";
-		String title = "test";
-		String content = "test";
+		String toMail = request.getParameter("email");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-			helper.setFrom(new InternetAddress(id, "dd"));
+			helper.setFrom(new InternetAddress(id, "JavaEmailSender"));
 			helper.setTo(toMail);
 			helper.setSubject(title);
 			helper.setText(content,true);
@@ -389,6 +388,7 @@ public class BoardTestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 }

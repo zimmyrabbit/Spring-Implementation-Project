@@ -1,23 +1,22 @@
 package com.project.spring.util;
 
+import javax.inject.Inject;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class MailSender {
 	
-	@Autowired
-	private JavaMailSender mailSender;
+	@Inject
+	JavaMailSender mailSender;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
 	
-	public void mailSend(HttpServletRequest request) {
+	public void mailSend() {
 		
 		String id = "zimmyrabbit@naver.com";
 		String toMail = "zimmyrabbit@naver.com";

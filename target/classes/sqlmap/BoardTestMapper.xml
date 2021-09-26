@@ -5,6 +5,17 @@
     
 <mapper namespace="com.project.spring.dao.BoardTestMapper">
     
+     <select id="getCount" resultType="integer">
+		SELECT count(*) as cnt FROM BoardTest
+		order by no DESC
+     </select>
+     
+     <select id="getList" resultType="Map" parameterType="Map">
+		SELECT *, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as excelDate FROM BoardTest
+		order by no DESC
+		limit #{param1}, #{param2}
+     </select>
+     
      <select id="selectList" resultType="Map">
 		SELECT *, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') as excelDate FROM BoardTest
 		order by no DESC
