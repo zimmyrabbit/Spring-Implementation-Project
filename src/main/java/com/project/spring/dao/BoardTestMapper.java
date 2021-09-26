@@ -7,6 +7,10 @@ import java.util.Map;
 
 public interface BoardTestMapper {
 
+	public int getCount();
+	
+	public ArrayList<Map<String, Object>> getList(int displayPost, int postNum);
+
 	public ArrayList<Map<String, Object>> selectList();
 
 	public int insertBoardTest(HashMap<String, String> map);

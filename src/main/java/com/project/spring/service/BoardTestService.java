@@ -20,10 +20,18 @@ public class BoardTestService {
 	@Autowired BoardTestMapper boardTestMapper;
 	@Autowired ServletContext context;
 	
-	public ArrayList<Map<String, Object>> getBoradTestList() {
+	public int getCount() {
+		int cnt = boardTestMapper.getCount();
+		return cnt;
+	}
+	
+	public ArrayList<Map<String, Object>> getList(int displayPost, int postNum) {
+		ArrayList<Map<String,Object>> list = boardTestMapper.getList(displayPost, postNum);
+		return list;
+	}
 
+	public ArrayList<Map<String, Object>> getBoradTestList() {
 		ArrayList<Map<String,Object>> list = boardTestMapper.selectList();
-		
 		return list;
 	}
 

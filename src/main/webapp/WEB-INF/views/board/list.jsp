@@ -36,6 +36,31 @@
 </table>
 <form id="excelDownForm"></form>
 
+
+	<c:if test="${prev}">
+		<span>[ <a href="/board/list?num=${startPageNum - 1}">◀◀</a> ]&nbsp;</span>
+	</c:if>
+	
+	<c:forEach begin="${startPageNum}" end="${endPageNum}" var="num">
+  		<span>
+  		
+  			<c:if test="${select != num}">
+  				<a href="/board/list?num=${num}">[${num}]</a>
+  			</c:if> 			
+  			
+  			<c:if test="${select == num}">
+  				<b>[${num}]</b>
+  			</c:if>
+  			
+		</span>
+	</c:forEach>
+	
+	<c:if test="${next}">
+		<span>&nbsp;[ <a href="/board/list?num=${endPageNum + 1}">▶▶</a> ]</span>
+	</c:if>
+	
+<br><br>
+<a href="/">[홈]으로</a> <br><br>
 <a href="/board/write"><button type="button"><spring:message code="btn.write"/></button></a> <!-- 글쓰기 -->
 <a href="/board/videoWrite"><button type="button"><spring:message code="btn.videoWrite"/></button></a> <!-- 동영상 올리기 -->
 <button type="button" id="excelDown"><spring:message code="btn.excel"/></button> <!-- 엑셀 다운로드 -->
