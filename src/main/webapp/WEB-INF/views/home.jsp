@@ -33,6 +33,7 @@
 <button type="button" class="lang" data-lang="kor">한국어</button>
 <button type="button" class="lang" data-lang="eng">영어</button>
 <button type="button" class="lang" data-lang="jpn">일본어</button>
+<button type="button" class="lang" data-lang="chi">중국어</button>
 
 <P> <p><spring:message code="page.time"/>&nbsp;${serverTime}. </P>
 </body>
