@@ -316,7 +316,7 @@ public class BoardTestController {
 	@RequestMapping(value="/board/map", method=RequestMethod.POST)
 	public @ResponseBody void mapProc(HttpServletRequest request) {
 		
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<String, String>();
 
 		String address = request.getParameter("address");
 		StringTokenizer tokens = new StringTokenizer(address, " ");
@@ -388,6 +388,12 @@ public class BoardTestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	//chat
+	@RequestMapping(value="/board/chat")
+	public void chat() {
 		
 	}
 	
